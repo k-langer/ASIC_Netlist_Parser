@@ -4,8 +4,9 @@ TARGET=ASIC_Netlist_Parser
 
 #INC = -Ipath ../inc
 
-OBJS = parser.o \
-	design.o
+OBJS = 	parser.o \
+	design.o \
+	main.o
 
 %.o: %.d
 	$(CC) $(INC) $(CFLAGS) -c $<

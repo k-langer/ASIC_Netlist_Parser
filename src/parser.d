@@ -1,20 +1,8 @@
 import std.stdio, std.regex;
 import design; 
-
+//import imports;
 
 void parseFVile(string filename);
-
-
-
-
-void main(string argv[]){
-  
-    Design d = parseVFile(argv[1]);
-    d.print(d.getNets());
-}
-
-
-
 
 Design parseVFile(string filename) {
 

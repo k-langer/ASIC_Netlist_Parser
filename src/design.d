@@ -1,13 +1,11 @@
 import std.stdio, std.container;
+//import imports;
 
-alias RedBlackTree !(net) nets;
-alias RedBlackTree !(port) ports;
-alias RedBlackTree !(instance) instances;
-alias RedBlackTree !(pin) pins;
-net * netp;
-port* potp;
-instance* instancep;
-pin* pinp;
+alias RedBlackTree !(DesignObject) nets;
+alias RedBlackTree !(DesignObject) ports;
+alias RedBlackTree !(DesignObject) instances;
+alias RedBlackTree !(DesignObject) pins;
+
 
 
 class Design {
@@ -23,13 +21,13 @@ class Design {
         i = new instances();
 	}
     public void addNet(string net_s) {
-        n.insert(new net(net_s));
+        n.insert(new Net(net_s));
     }
     public void addPort(string port_s) {
-        p.insert(new port(port_s));
+        p.insert(new Port(port_s));
     }
     public void addInstance(string instance_s) {
-        i.insert(new instance(instance_s));
+        i.insert(new Instance(instance_s));
     }
     public instances getInstances() {
         return i;
@@ -53,9 +51,21 @@ class Design {
 		throw new Exception("Cannot compare non-designs");
 	}
 }
-class pin {
-    string name;
-    //auto netsOfPin = new SList();
+
+class DesignObject {
+   string name;
+    DesignObject getObject() {
+        return this;
+    }
+    override string toString() {
+        return name;
+    }
+}
+
+class Pin : DesignObject {
+    
+    nets netsOfPin;
+    instances instancesOfPin; 
 
     this(string namex) 
     {
@@ -63,66 +73,67 @@ class pin {
     }
     override int opCmp (Object o)
 	{
-        if  (auto other = cast(pin) o) {    
+        if  (auto other = cast(Pin) o) {    
             return (name > other.name) - (name < other.name);
         }
 		throw new Exception("Cannot compare non-designs");
 	}
 }
 
-class net {
-    string name;
-    //auto instancesOfNet = new SList();
+class Net : DesignObject{
+    instances instancesOfNet;
+    pins pinsOfNet;
     
     this(string namex) 
     {
         name = namex;
+        instancesOfNet = new instances(); 
+        pinsOfNet = new pins();
     }
     override int opCmp (Object o)
 	{
-        if  (auto other = cast(net) o) {    
+        if  (auto other = cast(Net) o) {    
             return (name > other.name) - (name < other.name);
         }
 		throw new Exception("Cannot compare non-designs");
 	}
-    override string toString() {
-        return name;
-    }
+    
 }
-class port {
-    string name;
-    //auto netsOfPort  = new SList();
+class Port : DesignObject{
+    nets netsOfPort;
+    instances instancesOfPort;
     
     this(string namex) 
     {
         name = namex;
+        netsOfPort = new nets();
+        instancesOfPort = new instances();
     }
     override int opCmp (Object o)
 	{
-        if  (auto other = cast(port) o) {    
+        if  (auto other = cast(Port) o) {    
             return (name > other.name) - (name < other.name);
         }
 		throw new Exception("Cannot compare non-designs");
 	}
-    override string toString() {
-        return name;
-    }
+    
 }
-class instance {
-    string name;
+class Instance : DesignObject{
+    nets netsOfInstance;
+    ports portsOfInstance;
 
     this(string namex) 
     {
         name = namex;
+        netsOfInstance = new nets();
+        portsOfInstance = new ports();
     }
     override int opCmp (Object o)
 	{
-        if  (auto other = cast(instance) o) {    
+        if  (auto other = cast(Instance) o) {    
             return (name > other.name) - (name < other.name);
         }
 		throw new Exception("Cannot compare non-designs");
 	}
-    override string toString() {
-        return name;
-    }
+   
 }
