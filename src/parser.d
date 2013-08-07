@@ -1,4 +1,4 @@
-import std.stdio, std.regex;
+import std.stdio, std.regex, std.conv;
 import design; 
 //import imports;
 
@@ -20,7 +20,7 @@ Design parseVFile(string filename) {
     string select;
     bool isModule = false;
     bool captured = false;
-    
+    string instance; 
     //line by line structural verilog parser
 	foreach(string l; lines) {
 
@@ -63,14 +63,22 @@ Design parseVFile(string filename) {
                         } 
                         if (endBus) {
                             //writeln("\t" , m.captures[1] , " " , width);
-                            d.addPort(m.captures[1]);
+                            if (width == 1 ) {
+                                auto n = d.addNet(m.captures[1]); 
+                                d.addPort(n,m.captures[1]);
+                            } else {
+                                for (int ic = 0; ic < width; ic++) {
+                                    auto n = d.addNet(m.captures[1] ~ "[" ~ to!string(ic) ~ "]"); 
+                                    d.addPort(n,m.captures[1]);
+                                }
+                            }
                         }
                             
                     }
             //NET
                 } else if ( select == "wire" ) {
                     //writeln("net"); 
-                    foreach (pinNet; match(l,regex(r"(\w*),","gm"))){
+                    foreach (pinNet; match(l,regex(r"(\w*)[,;]","gm"))){
                         //writeln("\t" , pinNet.captures[1]);
                         d.addNet(pinNet.captures[1]);
                     }
@@ -78,6 +86,7 @@ Design parseVFile(string filename) {
                 } 
             //INSTANCE            
                 else {
+                    
                     if (!captured) {
                         //writeln(select);
                         captured = true;
@@ -85,12 +94,20 @@ Design parseVFile(string filename) {
                         if ( auto name_regx = match(l,r"\b\w*\b\s\\?([\w\[\]\d]*)") ) {
                             //writeln(name_regx.captures[1]);
                             d.addInstance( name_regx.captures[1]);
+                            instance = name_regx.captures[1];
                         }
                     }
                     //Get all pins and attached nets
+                    auto inst = d.getInstance(instance);
+                    //writeln(inst);
                     foreach (pinNet; match(l,regex(r"\.(\w*)\(([\w\[\]\d]*)\)","gm"))){
                         //writeln("\t" , pinNet.captures[1] , " " , pinNet.captures[2] );
-                        
+                        //writeln(inst);                        
+                        auto p = d.getPin(inst,pinNet.captures[1]);
+                        auto n = d.getNet(pinNet.captures[2]);
+                        //writeln(pinNet.captures[2] , " " , n , "\n");
+                        p.addNet(n); 
+                        n.addPin(p);
                     }
                     
                 }

@@ -11,6 +11,7 @@ int main(string argv[]){
         return -1;
     }
     Design d = parseVFile(argv[1]);
-    d.print(d.getInstances());
+    //d.print(d.getInstances());
+    writeln(d.getInstance("U91"));
     return 0;
 }
