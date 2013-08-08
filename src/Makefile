@@ -6,6 +6,8 @@ TARGET=ASIC_Netlist_Parser
 
 OBJS = 	parser.o \
 	design.o \
+	abstractDesignObject.o \
+	designObject.o \
 	main.o
 
 %.o: %.d
@@ -19,4 +21,4 @@ $(TARGET): $(OBJS)
 clean:
 	rm -f *.o $(TARGET) *~
 test:
-	./$(TARGET) counter.v
+	./$(TARGET) ../data/counter.v
