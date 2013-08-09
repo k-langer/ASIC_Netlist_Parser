@@ -2,13 +2,13 @@ import std.stdio, std.container, std.range;
 
 import designObject;
 
-alias RedBlackTree !(Net) nets;
-alias RedBlackTree !(Port) ports;
-alias RedBlackTree !(Instance) instances;
-alias RedBlackTree !(Pin) pins;
+
 
 class Design {
-
+    alias RedBlackTree !(Net) nets;
+    alias RedBlackTree !(Port) ports;
+    alias RedBlackTree !(Instance) instances;
+    alias RedBlackTree !(Pin) pins;
     nets n;
     ports p;
     instances i;

@@ -1,7 +1,10 @@
 import std.stdio; 
 
 import design; 
+import abstractDesignObject;
 import parser; 
+import UI; 
+
 //import imports; 
 
 int main(string argv[]){
@@ -12,6 +15,6 @@ int main(string argv[]){
     }
     Design d = parseVFile(argv[1]);
     //d.print(d.getInstances());
-    writeln(d.getInstance("U91"));
+    writect(d.getNet("N96").getPins());
     return 0;
 }

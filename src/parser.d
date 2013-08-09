@@ -108,6 +108,7 @@ Design parseVFile(string filename) {
                         //writeln(pinNet.captures[2] , " " , n , "\n");
                         p.addNet(n); 
                         n.addPin(p);
+                        inst.addPin(p);
                     }
                     
                 }

@@ -5,6 +5,7 @@ TARGET=ASIC_Netlist_Parser
 #INC = -Ipath ../inc
 
 OBJS = 	parser.o \
+	UI.o \
 	design.o \
 	abstractDesignObject.o \
 	designObject.o \

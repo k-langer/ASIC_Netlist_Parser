@@ -4,10 +4,6 @@ import abstractDesignObject;
 
 //Top level for all placement objects in design
 
-alias RedBlackTree !(DesignObject) nets;
-alias RedBlackTree !(DesignObject) ports;
-alias RedBlackTree !(DesignObject) instances;
-alias RedBlackTree !(DesignObject) pins;
 
 //Net attaches to pins and ports
 class Net : DesignObject{
